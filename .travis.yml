@@ -1,0 +1,28 @@
+# Используем язык java. Travis CI поддерживает другие языки тоже.
+language: java
+jdk:
+  - openjdk11
+
+# Даём права на исполнение скрипта mvnw, иначе сборка будет падать. Актуально для Spring Boot приложений.
+before_install:
+  - chmod +x mvnw
+
+# Используем режим обычного пользователя для сборки проекта.
+sudo: false
+
+# После выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo.
+# Здесь используется сторонний сервис https://codecov.io/.
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+# Отправлять уведомление на почту youremail@smtp.ru (изменить на свою), если сборка упала.
+notifications:
+  email:
+    recipients:
+      -vadimstr102@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
+
+env:
+  global:
+    - CODECOV_TOKEN="4d6f7884-b428-47a6-aca9-f71780c82e29"
